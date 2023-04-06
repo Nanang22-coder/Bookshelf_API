@@ -155,18 +155,22 @@ const update = (request,h) => {
  })
    return index
  }
- if(indexBooks === undefined) {
-   return h.response({
-    "status": "fail",
-    "message": "Buku gagal dihapus. Id tidak ditemukan"
-})
- } else {
-   books.slice(indexBooks(),1)
+ 
+ if(indexBooks() !== undefined){
+   books.splice(indexBooks(),1)
    console.log("daftar buku setelah di hapus ",books)
     return h.response({
     "status": "success",
     "message": "Buku berhasil dihapus"
 })
-  }}
+  }
+ else {
+   return h.response({
+    "status": "fail",
+    "message": "Buku gagal dihapus. Id tidak ditemukan"
+})
+ } 
+    
+  }
   
   export {addbook,getbooks,getById,update,deleteBook}
