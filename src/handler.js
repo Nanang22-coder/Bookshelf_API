@@ -81,6 +81,14 @@ const getbooks = (request,h) => {
 const update = (request,h) => {
     const{bookid} = request.params
     const dataId = books.filter((m) => m["id"] === bookid)
+// JIKA ID TIDAK DI TEMUKAN
+   if(dataId.length === 0) {
+     return h.response({
+    "status": "fail",
+    "message": "Gagal memperbarui buku. Id tidak ditemukan"
+}).code(404)
+   }
+    
     const{name,year,author,summary,publisher,pageCount,readPage,reading} = request.query
     const[p,r,updatedAt,y,insertedAt] = [parseInt(pageCount),parseInt(readPage),new Date().toISOString(),parseInt(year),dataId[0]["insertedAt"]]
     const finished = p === r
@@ -119,13 +127,7 @@ const update = (request,h) => {
     "status": "fail",
     "message": "Gagal memperbaruhi buku. readPage tidak boleh lebih besar dari pageCount"
 }).code(400)}
-// JIKA ID TIDAK DI TEMUKAN
-   if(dataId === undefined) {
-     return h.response({
-    "status": "fail",
-    "message": "Gagal memperbarui buku. Id tidak ditemukan"
-}).code(404)
-   }
+
    else {
      //MENCARI INDEX DATA BUKU YG AKAN DI GANTI
      const indexBooks = () => {
@@ -142,6 +144,29 @@ const update = (request,h) => {
 }).code(200)
    }
   }
+  //MENGHAPUS BOOK
+  const deleteBook = (request,h) => {
+    const {bookid} = request.params
+    //MENCARI INDEX BOOKS
+    const indexBooks = () => {
+      let index
+      books.forEach((v,i) => {
+      if(v["id"] === bookid)  index = i
+ })
+   return index
+ }
+ if(indexBooks === undefined) {
+   return h.response({
+    "status": "fail",
+    "message": "Buku gagal dihapus. Id tidak ditemukan"
+})
+ } else {
+   books.slice(indexBooks(),1)
+   console.log("daftar buku setelah di hapus ",books)
+    return h.response({
+    "status": "success",
+    "message": "Buku berhasil dihapus"
+})
+  }}
   
-  
-  export {addbook,getbooks,getById,update}
+  export {addbook,getbooks,getById,update,deleteBook}
