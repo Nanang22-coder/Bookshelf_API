@@ -138,6 +138,7 @@ const update = (request,h) => {
    return index
  }
     books[indexBooks()] = dataUpdate
+    console.log("daftar buku setelah update" ,books)
     return h.response({
     "status": "success",
     "message": "Buku berhasil diperbarui"
