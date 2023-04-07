@@ -1,6 +1,6 @@
 import Hapi from '@hapi/hapi'
 import r from "./routers.js"
-import {nanoid} from "nanoid"
+
 
  console.log(r)
 const runServer = async () => {

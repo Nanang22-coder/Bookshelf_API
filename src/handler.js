@@ -4,6 +4,7 @@ import books from "./dataBooks.js"
 //HANDLER MENAMBAHKAN DATA
 const addbook = (request, h) => {
   const{name,year,author,summary,publisher,pageCount,readPage,reading} = request.query
+  console.log(request.query)
   const[id,p,r,insertedAt,y] = [nanoid(16),parseInt(pageCount),parseInt(readPage),new Date().toISOString(),parseInt(year)]
   const finished = p === r
   const read = () => {
@@ -71,7 +72,12 @@ const getbooks = (request,h) => {
     const{bookid} = request.params
     const dataId = books.filter((m) => m["id"] === bookid)
     console.log(bookid,dataId)
-    if(dataId.length !== 0) return h.response(dataId)
+    if(dataId.length !== 0) return h.response({
+    "status": "success",
+    "data": {
+        "book": dataId[0]
+        
+     }} )
     return h.response({
     "status": "fail",
     "message": "Buku tidak ditemukan"
@@ -168,7 +174,7 @@ const update = (request,h) => {
  else {
    return h.response({
     "status": "fail",
-    "message": "Buku gagal dihapus. Id tidak ditemukan"
+    "message": " gagal dihapus. Id tidak ditemukan"
 })
  } 
     
